@@ -1,9 +1,12 @@
 /* =========================================================
    Bhakti — styles inspired by usa.akshardham.org
    Warm cream + saffron + deep ink, refined serif typography.
+   Light is default; dark is opt-in via [data-theme="dark"] OR
+   automatic when [data-theme="auto"] + prefers-color-scheme: dark.
    ========================================================= */
 
 :root {
+  /* Light theme tokens */
   --cream:        #f8f3e7;
   --cream-soft:   #fbf7ed;
   --paper:        #ffffff;
@@ -17,9 +20,70 @@
   --rule:         #e6dcc7;
   --shadow:       0 30px 60px -30px rgba(60, 40, 15, 0.35);
   --shadow-sm:    0 10px 30px -15px rgba(60, 40, 15, 0.25);
+  --header-bg:    rgba(248, 243, 231, 0.78);
+  --btn-bg:       rgba(255, 255, 255, 0.6);
+  --btn-bg-hover: rgba(255, 255, 255, 0.95);
+  --btn-border:   var(--rule);
+  --map-bg:       #eaddc1;
+
+  --bg-glow-1:    #fdf9ee;
+  --bg-glow-2:    #f3ead4;
 
   --serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
   --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --deva:  "Noto Sans Devanagari", "Cormorant Garamond", Georgia, serif;
+}
+
+/* Explicit dark override (user toggled) */
+:root[data-theme="dark"] {
+  --cream:        #1c170f;
+  --cream-soft:   #221b11;
+  --paper:        #2a2117;
+  --ink:          #f3ead4;
+  --ink-soft:     #d6c6a4;
+  --muted:        #9c8a6c;
+  --saffron:      #e0a946;
+  --saffron-deep: #c8932f;
+  --gold:         #e0c084;
+  --maroon:       #e89a82;
+  --rule:         rgba(224, 192, 132, 0.16);
+  --shadow:       0 30px 60px -25px rgba(0, 0, 0, 0.55);
+  --shadow-sm:    0 10px 30px -15px rgba(0, 0, 0, 0.5);
+  --header-bg:    rgba(28, 23, 15, 0.75);
+  --btn-bg:       rgba(255, 240, 200, 0.04);
+  --btn-bg-hover: rgba(255, 240, 200, 0.10);
+  --btn-border:   rgba(224, 192, 132, 0.22);
+  --map-bg:       #1f1a12;
+
+  --bg-glow-1:    #2a2014;
+  --bg-glow-2:    #221b11;
+}
+
+/* System dark (only honored when in "auto" mode) */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --cream:        #1c170f;
+    --cream-soft:   #221b11;
+    --paper:        #2a2117;
+    --ink:          #f3ead4;
+    --ink-soft:     #d6c6a4;
+    --muted:        #9c8a6c;
+    --saffron:      #e0a946;
+    --saffron-deep: #c8932f;
+    --gold:         #e0c084;
+    --maroon:       #e89a82;
+    --rule:         rgba(224, 192, 132, 0.16);
+    --shadow:       0 30px 60px -25px rgba(0, 0, 0, 0.55);
+    --shadow-sm:    0 10px 30px -15px rgba(0, 0, 0, 0.5);
+    --header-bg:    rgba(28, 23, 15, 0.75);
+    --btn-bg:       rgba(255, 240, 200, 0.04);
+    --btn-bg-hover: rgba(255, 240, 200, 0.10);
+    --btn-border:   rgba(224, 192, 132, 0.22);
+    --map-bg:       #1f1a12;
+
+    --bg-glow-1:    #2a2014;
+    --bg-glow-2:    #221b11;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -34,13 +98,13 @@ html, body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color .4s ease, color .4s ease;
 }
 
-/* subtle paper texture via gradient */
 body {
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, #fdf9ee 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 100% 100%, #f3ead4 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 50% 0%, var(--bg-glow-1) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, var(--bg-glow-2) 0%, transparent 55%),
     var(--cream);
   background-attachment: fixed;
 }
@@ -60,7 +124,7 @@ a:hover { color: var(--maroon); }
   position: sticky; top: 0; z-index: 50;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  background: rgba(248, 243, 231, 0.78);
+  background: var(--header-bg);
   border-bottom: 1px solid var(--rule);
 }
 .nav-inner {
@@ -70,23 +134,41 @@ a:hover { color: var(--maroon); }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 .brand {
   display: inline-flex; align-items: center; gap: 12px;
   color: var(--ink);
 }
 .brand-mark {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 30%, #f5d480 0%, var(--gold) 45%, var(--saffron-deep) 100%);
-  box-shadow: 0 0 0 1px rgba(168, 118, 29, 0.25), inset 0 0 8px rgba(255,255,255,0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  width: auto;
+}
+.brand-mark img {
+  display: block;
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(0 1px 2px rgba(60, 40, 15, 0.18));
+}
+/* Slightly soften the red text in the logo for dark mode so it doesn't glow */
+:root[data-theme="dark"] .brand-mark img { opacity: 0.94; }
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .brand-mark img { opacity: 0.94; }
 }
 .brand-name {
   font-family: var(--serif);
   font-weight: 600;
   font-size: 1.4rem;
   letter-spacing: 0.04em;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 .nav-links {
   display: flex; gap: 28px;
@@ -110,6 +192,41 @@ a:hover { color: var(--maroon); }
 
 @media (max-width: 640px) {
   .nav-links { display: none; }
+  .nav-inner { padding: 14px 20px; }
+}
+
+/* ---------- Theme toggle ---------- */
+.theme-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, transform .2s ease, border-color .2s ease;
+  padding: 0;
+}
+.theme-toggle:hover {
+  background: var(--btn-bg-hover);
+  color: var(--ink);
+  transform: rotate(-12deg);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--saffron);
+  outline-offset: 2px;
+}
+.theme-toggle .theme-icon { display: none; }
+:root[data-theme="dark"] .theme-toggle .sun { display: block; }
+:root[data-theme="light"] .theme-toggle .moon { display: block; }
+:root[data-theme="auto"] .theme-toggle .moon { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .theme-toggle .moon { display: none; }
+  :root[data-theme="auto"] .theme-toggle .sun  { display: block; }
 }
 
 /* ---------- Eyebrow ---------- */
@@ -142,6 +259,7 @@ a:hover { color: var(--maroon); }
   border: 1px solid var(--rule);
   border-radius: 4px;
   box-shadow: var(--shadow);
+  transition: background-color .4s ease, border-color .4s ease;
 }
 .quote-card::before,
 .quote-card::after {
@@ -183,7 +301,7 @@ a:hover { color: var(--maroon); }
 }
 .quote-attr {
   font-family: var(--sans);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
@@ -200,27 +318,27 @@ a:hover { color: var(--maroon); }
   padding: 56px 44px 40px;
   animation: shloka-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+.shloka-card.is-fading {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .25s ease, transform .25s ease;
+}
 @keyframes shloka-rise {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .shloka-sanskrit {
-  font-family: var(--serif);
+  font-family: var(--deva);
   font-size: clamp(1.45rem, 3.1vw, 2.05rem);
   line-height: 1.6;
   color: var(--maroon);
   margin-bottom: 14px;
   letter-spacing: 0.005em;
-  /* Devanagari renders better with a slightly heavier weight */
   font-weight: 500;
 }
-.shloka-sanskrit .line {
-  display: block;
-}
-.shloka-sanskrit .line + .line {
-  margin-top: 4px;
-}
+.shloka-sanskrit .line { display: block; }
+.shloka-sanskrit .line + .line { margin-top: 4px; }
 
 .shloka-translit {
   font-family: var(--serif);
@@ -231,9 +349,7 @@ a:hover { color: var(--maroon); }
   margin-bottom: 26px;
   letter-spacing: 0.01em;
 }
-.shloka-translit .line {
-  display: block;
-}
+.shloka-translit .line { display: block; }
 
 .shloka-divider {
   display: flex;
@@ -258,22 +374,87 @@ a:hover { color: var(--maroon); }
   margin-bottom: 22px;
 }
 
-.shloka-sep {
-  color: var(--gold);
-  font-weight: 700;
-}
-.shloka-source {
-  color: var(--saffron-deep);
-}
+.shloka-sep { color: var(--gold); font-weight: 700; }
+.shloka-source { color: var(--saffron-deep); }
 .shloka-num {
   color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+  transition: color .2s ease, border-color .2s ease;
+}
+.shloka-num:hover {
+  color: var(--saffron-deep);
+  border-bottom-color: var(--gold);
+}
+
+/* ---------- Shloka actions ---------- */
+.shloka-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.action-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, border-color .2s ease,
+              transform .15s ease, box-shadow .2s ease;
+}
+.action-btn:hover {
+  background: var(--btn-bg-hover);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+.action-btn:active { transform: translateY(1px); }
+.action-btn:focus-visible {
+  outline: 2px solid var(--saffron);
+  outline-offset: 2px;
+}
+.action-btn.primary {
+  color: var(--paper);
+  background: var(--saffron-deep);
+  border-color: var(--saffron-deep);
+  box-shadow: 0 6px 18px -10px rgba(168, 118, 29, 0.7);
+}
+:root[data-theme="dark"] .action-btn.primary,
+:root[data-theme="auto"] .action-btn.primary {
+  color: #1c170f;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .action-btn.primary { color: #1c170f; }
+}
+.action-btn.primary:hover {
+  background: var(--maroon);
+  border-color: var(--maroon);
+  color: #fff;
+}
+.action-btn svg { flex-shrink: 0; }
+
+/* Tiny visual feedback when an action's status changes */
+.action-btn.is-confirmed {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
 }
 
 @media (max-width: 600px) {
-  .shloka-card {
-    padding: 44px 24px 32px;
-  }
-  .quote-mark { font-size: 4rem; }
+  .shloka-card { padding: 44px 24px 32px; }
+  .quote-mark  { font-size: 4rem; }
+  .action-btn  { padding: 9px 14px; font-size: 0.84rem; }
 }
 
 /* ---------- Ornament Divider ---------- */
@@ -384,8 +565,9 @@ a:hover { color: var(--maroon); }
   width: 100%;
   height: 460px;
   border-radius: 2px;
-  background: #eaddc1;
+  background: var(--map-bg);
   filter: saturate(0.85);
+  position: relative;
 }
 @media (max-width: 600px) {
   #worldMap { height: 360px; }
@@ -399,10 +581,38 @@ a:hover { color: var(--maroon); }
   text-align: center;
 }
 
+/* Placeholder shown until Leaflet is lazy-loaded */
+.map-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.map-placeholder-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 0 rgba(212, 169, 96, 0.6);
+  animation: placeholder-pulse 1.6s ease-out infinite;
+}
+@keyframes placeholder-pulse {
+  0%   { box-shadow: 0 0 0 0    rgba(212, 169, 96, 0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(212, 169, 96, 0);   }
+}
+/* Hide placeholder once Leaflet replaces the contents */
+#worldMap.leaflet-container .map-placeholder { display: none; }
+
 /* Override Leaflet attribution to fit the aesthetic */
 .leaflet-container {
   font-family: var(--sans);
-  background: #eaddc1;
+  background: var(--map-bg);
 }
 .leaflet-control-attribution {
   background: rgba(251, 247, 237, 0.85) !important;
@@ -410,6 +620,18 @@ a:hover { color: var(--maroon); }
   font-size: 10px !important;
 }
 .leaflet-control-attribution a { color: var(--saffron-deep) !important; }
+:root[data-theme="dark"] .leaflet-tile {
+  filter: invert(1) hue-rotate(180deg) brightness(0.86) contrast(0.88) saturate(0.8);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .leaflet-tile {
+    filter: invert(1) hue-rotate(180deg) brightness(0.86) contrast(0.88) saturate(0.8);
+  }
+}
+:root[data-theme="dark"] .leaflet-control-attribution,
+:root[data-theme="auto"] .leaflet-control-attribution {
+  background: rgba(28, 23, 15, 0.75) !important;
+}
 
 /* Custom pulsing dot marker */
 .bhakti-marker {
@@ -493,6 +715,35 @@ a:hover { color: var(--maroon); }
   font-family: var(--serif);
   font-style: italic;
   color: var(--ink-soft) !important;
+}
+.footer-sub a {
+  color: var(--saffron-deep);
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s ease;
+}
+.footer-sub a:hover { border-bottom-color: var(--gold); }
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 36px;
+  transform: translate(-50%, 20px);
+  background: var(--ink);
+  color: var(--cream);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 14px 36px -16px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+  transition: opacity .25s ease, transform .25s ease;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 /* ---------- Reduced motion ---------- */

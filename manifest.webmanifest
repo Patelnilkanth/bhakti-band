@@ -1,0 +1,27 @@
+{
+  "name": "Bhakti Bands — A verse from the Satsang Diksha",
+  "short_name": "Bhakti Bands",
+  "description": "Tap your Bhakti Band — receive a fresh Satsang Diksha shloka each time.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8f3e7",
+  "theme_color": "#c8932f",
+  "lang": "en",
+  "categories": ["lifestyle", "education", "books"],
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "502x689",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

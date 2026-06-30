@@ -1,37 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="auto">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bhakti — A Verse from the Satsang Diksha</title>
-  <meta name="description" content="Tap your NFC band — receive a fresh Satsang Diksha shloka each time, from the granth of Pragat Brahmaswarup Mahant Swami Maharaj." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Bhakti Bands — A Verse from the Satsang Diksha</title>
+  <meta name="description" content="Tap your Bhakti Band — receive a fresh Satsang Diksha shloka each time, from the granth of Pragat Brahmaswarup Mahant Swami Maharaj." />
 
+  <!-- Theme color updates the browser chrome to match the page -->
+  <meta name="theme-color" content="#f8f3e7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1c170f" media="(prefers-color-scheme: dark)" />
+
+  <!-- iOS / Android PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Bhakti Bands" />
+
+  <!-- Favicons -->
+  <link rel="icon" href="favicon.png" type="image/png" sizes="256x256" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bhakti Bands" />
+  <meta property="og:title" content="Bhakti Bands — A Verse from the Satsang Diksha" />
+  <meta property="og:description" content="Tap your Bhakti Band — receive a fresh Satsang Diksha shloka each time." />
+  <meta property="og:image" content="logo.png" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Bhakti Bands — A Verse from the Satsang Diksha" />
+  <meta name="twitter:description" content="Tap your Bhakti Band — receive a fresh Satsang Diksha shloka each time." />
+  <meta name="twitter:image" content="logo.png" />
+
+  <!-- Fonts: preconnect + preload for instant first paint -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" />
 
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Pin the chosen theme before paint to avoid a flash. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("bhakti.theme");
+        if (t === "light" || t === "dark") {
+          document.documentElement.setAttribute("data-theme", t);
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="nav-inner">
-      <a class="brand" href="#top" aria-label="Bhakti — home">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span class="brand-name">Bhakti</span>
+      <a class="brand" href="#top" aria-label="Bhakti Bands — home">
+        <span class="brand-mark" aria-hidden="true">
+          <img src="logo.png" alt="" width="34" height="46" decoding="async" />
+        </span>
+        <span class="brand-name">Bhakti Bands</span>
       </a>
-      <nav class="nav-links" aria-label="Primary">
-        <a href="#reflection">Reflection</a>
-        <a href="#presence">Presence</a>
-        <a href="#about">About</a>
-      </nav>
+
+      <div class="nav-right">
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#reflection">Reflection</a>
+          <a href="#presence">Presence</a>
+        </nav>
+
+        <button type="button" class="theme-toggle" id="themeToggle"
+                aria-label="Toggle dark mode" title="Toggle dark mode">
+          <svg class="theme-icon sun" viewBox="0 0 24 24" width="18" height="18"
+               fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"/>
+            <path d="M12 2v2.2M12 19.8V22M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2 12h2.2M19.8 12H22M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/>
+          </svg>
+          <svg class="theme-icon moon" viewBox="0 0 24 24" width="18" height="18"
+               fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
   <main id="top">
-    <!-- HERO + QUOTE -->
+    <!-- HERO + SHLOKA -->
     <section class="hero" id="reflection" aria-labelledby="reflection-title">
       <div class="hero-inner">
         <p class="eyebrow">A Verse for You</p>
@@ -40,24 +100,63 @@
         <figure class="quote-card shloka-card" id="shlokaCard">
           <span class="quote-mark" aria-hidden="true">&ldquo;</span>
 
-          <div class="shloka-sanskrit" id="shlokaSanskrit" lang="sa"
-               aria-label="Sanskrit verse"></div>
+          <div class="shloka-sanskrit" id="shlokaSanskrit"
+               lang="sa-Deva" aria-label="Sanskrit verse"></div>
 
           <div class="shloka-translit" id="shlokaTranslit"
-               aria-label="Sanskrit transliteration"></div>
+               lang="sa-Latn" aria-label="Sanskrit transliteration"></div>
 
           <div class="shloka-divider" aria-hidden="true">
             <span class="diamond-mini"></span>
           </div>
 
-          <blockquote class="shloka-english quote-text" id="shlokaEnglish"></blockquote>
+          <blockquote class="shloka-english quote-text" id="shlokaEnglish" lang="en"></blockquote>
 
           <figcaption class="quote-attr" id="shlokaAttr">
             <span class="shloka-source">Satsang Diksha</span>
             <span class="shloka-sep" aria-hidden="true">·</span>
-            <span class="shloka-num" id="shlokaNum"></span>
+            <a class="shloka-num" id="shlokaNum"
+               target="_blank" rel="noopener noreferrer"
+               title="Read this verse on anirdesh.com"></a>
           </figcaption>
         </figure>
+
+        <div class="shloka-actions" role="group" aria-label="Verse actions">
+          <button type="button" class="action-btn primary" id="nextBtn"
+                  aria-label="Show me another verse">
+            <svg viewBox="0 0 24 24" width="16" height="16"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 3-6.7"/>
+              <path d="M3 4v5h5"/>
+            </svg>
+            <span>Another verse</span>
+          </button>
+
+          <button type="button" class="action-btn" id="shareBtn"
+                  aria-label="Share this verse">
+            <svg viewBox="0 0 24 24" width="16" height="16"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="6" cy="12" r="2.4"/>
+              <circle cx="18" cy="6" r="2.4"/>
+              <circle cx="18" cy="18" r="2.4"/>
+              <path d="M8.1 11 15.9 7M8.1 13l7.8 4"/>
+            </svg>
+            <span id="shareBtnLabel">Share</span>
+          </button>
+
+          <button type="button" class="action-btn" id="copyBtn"
+                  aria-label="Copy verse to clipboard">
+            <svg viewBox="0 0 24 24" width="16" height="16"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="8" y="8" width="12" height="12" rx="2"/>
+              <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>
+            </svg>
+            <span id="copyBtnLabel">Copy</span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -85,7 +184,7 @@
           <dl class="location-meta">
             <div>
               <dt>Location</dt>
-              <dd>Sarangpur, Botad, Gujarat</dd>
+              <dd>Sarangpur, Gujarat</dd>
             </div>
             <div>
               <dt>Coordinates</dt>
@@ -102,36 +201,22 @@
         </div>
 
         <div class="map-wrap">
-          <div id="worldMap" role="img" aria-label="World map with a marker on Sarangpur, Gujarat, India"></div>
+          <div id="worldMap" role="img" aria-label="World map with a marker on Sarangpur, Gujarat, India">
+            <div class="map-placeholder" aria-hidden="true">
+              <span class="map-placeholder-dot"></span>
+              <span class="map-placeholder-text">Loading map…</span>
+            </div>
+          </div>
           <p class="map-caption">Live location of Mahant Swami Maharaj</p>
         </div>
       </div>
     </section>
 
-    <!-- ABOUT -->
-    <section class="about" id="about" aria-labelledby="about-title">
-      <div class="about-inner">
-        <p class="eyebrow">About Bhakti</p>
-        <h2 id="about-title">A quiet companion for the seeking heart.</h2>
-        <p>
-          Bhakti is a daily reflection space — a small window into the words and
-          presence of <em>Mahant Swami Maharaj</em>, the spiritual successor in the
-          lineage of <em>Bhagwan Swaminarayan</em>. Each visit offers a single
-          thought to carry through your day.
-        </p>
-      </div>
-    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <p>Made with devotion.</p>
-      <p class="footer-sub">Bhakti &middot; A daily reflection</p>
-    </div>
-  </footer>
+  <!-- Toast for copy/share feedback -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="shlokas.js"></script>
   <script src="script.js"></script>
 </body>
