@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhakti — A Daily Reflection</title>
+  <meta name="description" content="A space for daily inspiration from the words of Mahant Swami Maharaj and the Swaminarayan tradition." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="Bhakti — home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">Bhakti</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#reflection">Reflection</a>
+        <a href="#presence">Presence</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO + QUOTE -->
+    <section class="hero" id="reflection" aria-labelledby="reflection-title">
+      <div class="hero-inner">
+        <p class="eyebrow">Today's Reflection</p>
+        <h1 id="reflection-title" class="sr-only">Daily reflection from the Swaminarayan tradition</h1>
+
+        <figure class="quote-card">
+          <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+          <blockquote class="quote-text" id="quoteText">
+            In happiness and misery, remember that God is by my side.
+          </blockquote>
+          <figcaption class="quote-attr" id="quoteAttr">
+            &mdash; Mahant Swami Maharaj
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="ornament" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="line"></span>
+      <span class="diamond"></span>
+      <span class="line"></span>
+      <span class="dot"></span>
+    </div>
+
+    <!-- PRESENCE / MAP -->
+    <section class="presence" id="presence" aria-labelledby="presence-title">
+      <div class="presence-inner">
+        <div class="presence-copy">
+          <p class="eyebrow">Where He Is</p>
+          <h2 id="presence-title">In the presence of the Guru.</h2>
+          <p class="lead">
+            His Holiness Mahant Swami Maharaj is currently residing at
+            <strong>Sarangpur</strong>, in the state of <strong>Gujarat, India</strong> —
+            the spiritual heart of the BAPS Swaminarayan Sanstha.
+          </p>
+
+          <dl class="location-meta">
+            <div>
+              <dt>Location</dt>
+              <dd>Sarangpur, Botad, Gujarat</dd>
+            </div>
+            <div>
+              <dt>Coordinates</dt>
+              <dd>22.2392° N, 71.7825° E</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>
+                <span class="status-dot" aria-hidden="true"></span>
+                In residence
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="map-wrap">
+          <div id="worldMap" role="img" aria-label="World map with a marker on Sarangpur, Gujarat, India"></div>
+          <p class="map-caption">Live location of Mahant Swami Maharaj</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="about-inner">
+        <p class="eyebrow">About Bhakti</p>
+        <h2 id="about-title">A quiet companion for the seeking heart.</h2>
+        <p>
+          Bhakti is a daily reflection space — a small window into the words and
+          presence of <em>Mahant Swami Maharaj</em>, the spiritual successor in the
+          lineage of <em>Bhagwan Swaminarayan</em>. Each visit offers a single
+          thought to carry through your day.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Made with devotion.</p>
+      <p class="footer-sub">Bhakti &middot; A daily reflection</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="script.js"></script>
+</body>
+</html>
