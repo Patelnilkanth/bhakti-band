@@ -171,8 +171,8 @@ a:hover { color: var(--maroon); }
   margin: 0 0 28px;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
-  line-height: 1.4;
+  font-size: clamp(1.4rem, 2.8vw, 1.95rem);
+  line-height: 1.45;
   color: var(--ink);
   font-style: italic;
   transition: opacity .35s ease, transform .35s ease;
@@ -189,8 +189,92 @@ a:hover { color: var(--maroon); }
   color: var(--muted);
   font-weight: 500;
   transition: opacity .35s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 .quote-attr.is-fading { opacity: 0; }
+
+/* ---------- Shloka card (Sanskrit + transliteration + English) ---------- */
+.shloka-card {
+  padding: 56px 44px 40px;
+  animation: shloka-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes shloka-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.shloka-sanskrit {
+  font-family: var(--serif);
+  font-size: clamp(1.45rem, 3.1vw, 2.05rem);
+  line-height: 1.6;
+  color: var(--maroon);
+  margin-bottom: 14px;
+  letter-spacing: 0.005em;
+  /* Devanagari renders better with a slightly heavier weight */
+  font-weight: 500;
+}
+.shloka-sanskrit .line {
+  display: block;
+}
+.shloka-sanskrit .line + .line {
+  margin-top: 4px;
+}
+
+.shloka-translit {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(0.95rem, 1.7vw, 1.1rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 26px;
+  letter-spacing: 0.01em;
+}
+.shloka-translit .line {
+  display: block;
+}
+
+.shloka-divider {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 22px;
+}
+.shloka-divider .diamond-mini {
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  box-shadow:
+    -16px 0 0 -2.5px var(--gold),
+     16px 0 0 -2.5px var(--gold);
+  opacity: 0.85;
+}
+
+.shloka-english {
+  font-style: normal;
+  color: var(--ink);
+  text-wrap: balance;
+  margin-bottom: 22px;
+}
+
+.shloka-sep {
+  color: var(--gold);
+  font-weight: 700;
+}
+.shloka-source {
+  color: var(--saffron-deep);
+}
+.shloka-num {
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  .shloka-card {
+    padding: 44px 24px 32px;
+  }
+  .quote-mark { font-size: 4rem; }
+}
 
 /* ---------- Ornament Divider ---------- */
 .ornament {

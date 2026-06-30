@@ -1,23 +1,82 @@
 /* ============================================================
    Bhakti — interactivity
-   - Displays a single reflection chosen in code.
-   - Renders a world map with a pulsing blue dot on Sarangpur.
+
+   Designed for an NFC band: every scan opens this page and a
+   fresh Satsang Diksha shloka is drawn at random and rendered.
+
+   The verse data lives in `shlokas.js` (auto-generated from
+   anirdesh.com/diksha) as the global array `window.SHLOKAS`.
+   Each entry has the shape:
+     {
+       n: <number 1..315>,
+       sanskrit:        [<line>, <line>, …],   // Devanagari
+       transliteration: [<line>, <line>, …],   // IAST-ish transliteration
+       english:         "<English translation>"
+     }
    ============================================================ */
 
-/* ----------------------------------------------------------
-   REFLECTION — the one quote shown on the page.
-   Edit `text` and `author` to change what visitors see.
-   ---------------------------------------------------------- */
-const REFLECTION = {
-  text: "In happiness and misery, remember that God is by my side.",
-  author: "Mahant Swami Maharaj",
-};
+(function renderShloka() {
+  const sanskritEl = document.getElementById("shlokaSanskrit");
+  const translitEl = document.getElementById("shlokaTranslit");
+  const englishEl  = document.getElementById("shlokaEnglish");
+  const numEl      = document.getElementById("shlokaNum");
 
-const quoteTextEl = document.getElementById("quoteText");
-const quoteAttrEl = document.getElementById("quoteAttr");
+  const shlokas = Array.isArray(window.SHLOKAS) ? window.SHLOKAS : [];
 
-quoteTextEl.textContent = REFLECTION.text;
-quoteAttrEl.innerHTML = `&mdash; ${REFLECTION.author}`;
+  if (!shlokas.length) {
+    englishEl.textContent =
+      "In happiness and misery, remember that God is by my side.";
+    numEl.textContent = "Mahant Swami Maharaj";
+    return;
+  }
+
+  // Pick a random verse. We try to avoid showing the same verse
+  // twice in a row by remembering the last one in sessionStorage
+  // (so a re-tap on the NFC band genuinely brings something new).
+  const lastN = Number(sessionStorage.getItem("bhakti.lastN") || 0);
+  let pick = shlokas[Math.floor(Math.random() * shlokas.length)];
+  if (shlokas.length > 1) {
+    let guard = 0;
+    while (pick.n === lastN && guard++ < 8) {
+      pick = shlokas[Math.floor(Math.random() * shlokas.length)];
+    }
+  }
+  sessionStorage.setItem("bhakti.lastN", String(pick.n));
+
+  // Render Sanskrit lines (Devanagari).
+  sanskritEl.innerHTML = pick.sanskrit
+    .map((ln) => `<span class="line">${escapeHtml(ln)}</span>`)
+    .join("");
+
+  // Render transliteration lines.
+  translitEl.innerHTML = (pick.transliteration || [])
+    .map((ln) => `<span class="line">${escapeHtml(ln)}</span>`)
+    .join("");
+
+  // English translation. We strip the trailing "(N)" or "(4-5)" the
+  // source page appends, since we already show the verse number in
+  // the figcaption.
+  const english = String(pick.english || "")
+    .replace(/\s*\(\s*\d{1,3}\s*[-–]?\s*\d{0,3}\s*\)\s*$/, "")
+    .trim();
+  englishEl.textContent = english;
+
+  // Verse number, written naturally.
+  numEl.textContent = formatVerseLabel(pick.n);
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function formatVerseLabel(n) {
+    return "Shloka " + n + " of 315";
+  }
+})();
 
 /* ----------------------------------------------------------
    World Map — Leaflet + OpenStreetMap
@@ -52,7 +111,6 @@ L.tileLayer(
   }
 ).addTo(map);
 
-// Custom pulsing dot icon
 const pulsingIcon = L.divIcon({
   className: "bhakti-marker-wrap",
   html: `
@@ -87,11 +145,9 @@ marker.bindPopup(
   { closeButton: false, offset: [0, -4] }
 );
 
-// Auto-open the popup once the map is ready
 map.whenReady(() => {
   setTimeout(() => marker.openPopup(), 600);
 });
 
-// Re-enable scroll-wheel zoom only after explicit click on the map
 map.on("click", () => map.scrollWheelZoom.enable());
 map.on("mouseout", () => map.scrollWheelZoom.disable());

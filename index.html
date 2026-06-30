@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bhakti — A Daily Reflection</title>
-  <meta name="description" content="A space for daily inspiration from the words of Mahant Swami Maharaj and the Swaminarayan tradition." />
+  <title>Bhakti — A Verse from the Satsang Diksha</title>
+  <meta name="description" content="Tap your NFC band — receive a fresh Satsang Diksha shloka each time, from the granth of Pragat Brahmaswarup Mahant Swami Maharaj." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,16 +34,28 @@
     <!-- HERO + QUOTE -->
     <section class="hero" id="reflection" aria-labelledby="reflection-title">
       <div class="hero-inner">
-        <p class="eyebrow">Today's Reflection</p>
-        <h1 id="reflection-title" class="sr-only">Daily reflection from the Swaminarayan tradition</h1>
+        <p class="eyebrow">A Verse for You</p>
+        <h1 id="reflection-title" class="sr-only">A Satsang Diksha shloka, freshly drawn for this visit</h1>
 
-        <figure class="quote-card">
+        <figure class="quote-card shloka-card" id="shlokaCard">
           <span class="quote-mark" aria-hidden="true">&ldquo;</span>
-          <blockquote class="quote-text" id="quoteText">
-            In happiness and misery, remember that God is by my side.
-          </blockquote>
-          <figcaption class="quote-attr" id="quoteAttr">
-            &mdash; Mahant Swami Maharaj
+
+          <div class="shloka-sanskrit" id="shlokaSanskrit" lang="sa"
+               aria-label="Sanskrit verse"></div>
+
+          <div class="shloka-translit" id="shlokaTranslit"
+               aria-label="Sanskrit transliteration"></div>
+
+          <div class="shloka-divider" aria-hidden="true">
+            <span class="diamond-mini"></span>
+          </div>
+
+          <blockquote class="shloka-english quote-text" id="shlokaEnglish"></blockquote>
+
+          <figcaption class="quote-attr" id="shlokaAttr">
+            <span class="shloka-source">Satsang Diksha</span>
+            <span class="shloka-sep" aria-hidden="true">·</span>
+            <span class="shloka-num" id="shlokaNum"></span>
           </figcaption>
         </figure>
       </div>
@@ -120,6 +132,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
           integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="shlokas.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
